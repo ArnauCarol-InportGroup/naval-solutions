@@ -1473,23 +1473,35 @@
         viewer
           .addSplatScene("./Cargo_Container_cutted.splat", {
             showLoadingUI: false,
-            progressiveLoad: true,
-            onProgress: (percent) => {
+            progressiveLoad: false,
+            onProgress: (percent, label, chunk, fileSize) => {
+              console.log("[splat] progress", percent, label, "size=", fileSize);
               statusText.textContent =
-                "Cargando modelo 3D… " + Math.round(percent) + "%";
+                "Cargando modelo 3D… " + Math.round(percent || 0) + "%";
             },
           })
           .then(() => {
+            console.log("[splat] addSplatScene resolved");
             statusEl.classList.add("hidden");
             viewer.start();
           })
           .catch((err) => {
-            console.error("addSplatScene failed:", err);
+            console.error("[splat] addSplatScene failed (wrapped):", err);
+            console.error("[splat] err.stack:", err && err.stack);
+            console.error("[splat] err.cause:", err && err.cause);
+            console.error("[splat] err keys:", err && Object.keys(err));
             statusText.textContent = "No se pudo cargar el modelo";
             statusSub.textContent = String(
               err && err.message ? err.message : err,
             );
           });
+
+      window.addEventListener("error", (e) => {
+        console.error("[window error]", e.message, e.filename, e.lineno, e.error);
+      });
+      window.addEventListener("unhandledrejection", (e) => {
+        console.error("[unhandledrejection]", e.reason);
+      });
       } catch (err) {
         console.error("Viewer init failed:", err);
         statusText.textContent = "Error al iniciar el visor";
