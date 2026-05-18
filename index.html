@@ -348,12 +348,17 @@
       }
       .hero-title {
         color: #fff;
-        letter-spacing: -1px;
+        letter-spacing: -1.5px;
         margin-bottom: 28px;
-        font-size: clamp(2rem, 5.5vw, 4.25rem);
+        font-size: clamp(2.5rem, 7vw, 5.5rem);
         font-weight: 900;
         line-height: 1.05;
-        max-width: 16ch;
+      }
+      .hero-accent {
+        background: linear-gradient(135deg, var(--accent), var(--accent-light));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
       }
       .hero-subtitle {
         color: #ffffffbf;
@@ -1084,12 +1089,11 @@
         <div class="hero-content">
           <div class="hero-badge">Visión Artificial y Drones Autónomos</div>
           <h1 class="hero-title">
-            Optimización de Inspecciones Navales mediante Visión Artificial y Drones Autónomos
+            Inspecciones Navales de <span class="hero-accent">Precisión</span>
           </h1>
           <p class="hero-subtitle">
-            Escaneo completo de cascos, cubiertas y carga con nuestro estándar 3SG.
-            Gemelos digitales en 3D de alta precisión para minimizar el tiempo de
-            estadía e inactividad en puerto.
+            Gemelos digitales 3D de cascos, cubiertas y carga con nuestro
+            estándar 3SG. Menos tiempo de estadía, más control operativo.
           </p>
           <div class="hero-actions">
             <a href="#services" class="btn btn-primary"
@@ -1256,7 +1260,7 @@
             <div>
               <span class="about-label">Sobre el Proyecto</span>
               <h2 class="about-title">
-                Revolucionando la inspección marítima con tecnología autónoma
+                Datos objetivos donde antes había <span class="hero-accent">criterio humano</span>
               </h2>
               <p class="about-text">
                 Nuestro sistema de drones autónomos transforma la inspección
@@ -1326,13 +1330,12 @@
           <div class="section-header">
             <span class="section-label">Tecnología 3SG en Acción</span>
             <h2 class="section-title section-title--light">
-              Explore el modelo 3D generado por nuestros drones
+              Explore un gemelo digital real
             </h2>
             <p class="section-subtitle section-subtitle--light">
-              Este entorno interactivo ha sido creado a partir de vídeo de dron
-              procesado con nuestra tecnología 3SG. Navegue libremente por la
-              escena 3D para ver el nivel de detalle que capturamos en cada
-              inspección.
+              Modelo 3D generado a partir de capturas reales de dron procesadas
+              con nuestra tecnología 3SG. Navegue libremente para apreciar el
+              nivel de detalle de cada inspección.
             </p>
           </div>
           <div class="viewer-area">
