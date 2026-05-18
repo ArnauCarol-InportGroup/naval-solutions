@@ -1473,7 +1473,7 @@
         viewer
           .addSplatScene("./Cargo_Container_cutted.splat", {
             showLoadingUI: false,
-            progressiveLoad: false,
+            progressiveLoad: true,
             onProgress: (percent) => {
               statusText.textContent =
                 "Cargando modelo 3D… " + Math.round(percent) + "%";
