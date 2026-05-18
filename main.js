@@ -1348,6 +1348,16 @@ async function main() {
             ];
         }
 
+        // Path-recorder hooks (only active when ?record=1)
+        if (window.__pathRecorder) {
+            const rec = window.__pathRecorder;
+            if (rec.playing && typeof rec.getPlaybackMatrix === "function") {
+                const m = rec.getPlaybackMatrix();
+                if (m) { viewMatrix = m; carousel = false; }
+            }
+            window.__viewMatrix = viewMatrix;
+        }
+
         if (isJumping) {
             jumpDelta = Math.min(1, jumpDelta + 0.05);
         } else {
