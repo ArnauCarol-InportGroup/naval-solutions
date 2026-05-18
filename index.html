@@ -771,11 +771,55 @@
         overflow: hidden;
         box-shadow: 0 20px 80px #0006;
       }
-      .viewer-iframe {
-        border: none;
-        width: 100%;
-        height: 100%;
+      .splat-viewer {
+        position: absolute;
+        inset: 0;
+      }
+      .splat-viewer canvas {
         display: block;
+        width: 100% !important;
+        height: 100% !important;
+      }
+      .splat-status {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        background: #000;
+        color: #fff;
+        z-index: 4;
+        transition: opacity 0.4s ease;
+        text-align: center;
+        padding: 24px;
+      }
+      .splat-status.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .splat-spinner {
+        width: 38px;
+        height: 38px;
+        border: 3px solid #ffffff22;
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: splat-spin 0.9s linear infinite;
+      }
+      #splat-status-text {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #ffffffcc;
+      }
+      #splat-status-sub {
+        font-size: 0.78rem;
+        color: #ffffff66;
+        max-width: 80%;
+        word-break: break-word;
+      }
+      @keyframes splat-spin {
+        to { transform: rotate(360deg); }
       }
       .activate-overlay {
         z-index: 5;
@@ -1265,14 +1309,12 @@
                   <span>Haz clic para interactuar con el modelo 3D</span>
                 </div>
               </div>
-              <iframe
-                src="./splat-viewer.html"
-                title="3SG Splat Viewer"
-                class="viewer-iframe"
-                allowfullscreen=""
-                loading="lazy"
-                tabindex="0"
-              ></iframe>
+              <div id="splat-viewer" class="splat-viewer"></div>
+              <div id="splat-status" class="splat-status">
+                <div class="splat-spinner"></div>
+                <div id="splat-status-text">Cargando modelo 3D…</div>
+                <div id="splat-status-sub">Cargo_Container_cutted.splat</div>
+              </div>
             </div>
             <div class="control-panel">
               <h4 class="control-title">Controles de Navegación</h4>
@@ -1395,6 +1437,63 @@
           var btn = card.querySelector(".card-toggle");
           if (btn) btn.setAttribute("aria-expanded", String(willOpen));
         });
+      }
+    </script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+          "three/examples/jsm/": "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/",
+          "@mkkellogg/gaussian-splats-3d": "https://cdn.jsdelivr.net/npm/@mkkellogg/gaussian-splats-3d@0.4.7/build/gaussian-splats-3d.module.js"
+        }
+      }
+    </script>
+
+    <script type="module">
+      import * as GaussianSplats3D from "@mkkellogg/gaussian-splats-3d";
+
+      const statusEl = document.getElementById("splat-status");
+      const statusText = document.getElementById("splat-status-text");
+      const statusSub = document.getElementById("splat-status-sub");
+
+      try {
+        const viewer = new GaussianSplats3D.Viewer({
+          rootElement: document.getElementById("splat-viewer"),
+          sharedMemoryForWorkers: false,
+          gpuAcceleratedSort: false,
+          useBuiltInControls: true,
+          dynamicScene: false,
+          halfPrecisionCovariancesOnGPU: false,
+          cameraUp: [0, -1, 0],
+          initialCameraPosition: [0, 0, 5],
+          initialCameraLookAt: [0, 0, 0],
+        });
+
+        viewer
+          .addSplatScene("./Cargo_Container_cutted.splat", {
+            showLoadingUI: false,
+            progressiveLoad: false,
+            onProgress: (percent) => {
+              statusText.textContent =
+                "Cargando modelo 3D… " + Math.round(percent) + "%";
+            },
+          })
+          .then(() => {
+            statusEl.classList.add("hidden");
+            viewer.start();
+          })
+          .catch((err) => {
+            console.error("addSplatScene failed:", err);
+            statusText.textContent = "No se pudo cargar el modelo";
+            statusSub.textContent = String(
+              err && err.message ? err.message : err,
+            );
+          });
+      } catch (err) {
+        console.error("Viewer init failed:", err);
+        statusText.textContent = "Error al iniciar el visor";
+        statusSub.textContent = String(err && err.message ? err.message : err);
       }
     </script>
   </body>
