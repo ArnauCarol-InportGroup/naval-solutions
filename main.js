@@ -780,7 +780,7 @@ function slerp(a, b, t) {
 
 function getPathMatrix(elapsedMs) {
     const total = PATH_KEYFRAMES.length;
-    const t = elapsedMs / PATH_SEGMENT_MS;
+    const t = Math.max(0, elapsedMs) / PATH_SEGMENT_MS;
     const segIndex = Math.floor(t) % total;
     const segT = t - Math.floor(t);
     const a = PATH_KEYFRAMES[segIndex];
