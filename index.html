@@ -581,33 +581,38 @@
       .vb-content {
         z-index: 2;
         text-align: center;
+        width: 100%;
         max-width: 780px;
         padding: 60px 24px;
         position: relative;
       }
-      .vb-label {
-        color: #00c896;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        background: #00c8961f;
-        border: 1px solid #00c89640;
-        border-radius: 50px;
+      .vb-carousel {
+        position: relative;
+        min-height: 260px;
+      }
+      .vb-slide {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 8px;
-        margin-bottom: 24px;
-        padding: 8px 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        display: inline-flex;
+        justify-content: center;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+        pointer-events: none;
+      }
+      .vb-slide.is-active {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
       }
       .vb-title {
         color: var(--text-white);
-        opacity: 0;
         margin-bottom: 20px;
         font-size: clamp(2rem, 5vw, 3rem);
         font-weight: 900;
         line-height: 1.15;
-        animation: 0.7s ease-out 0.15s forwards fadeInUp;
       }
       .vb-accent {
         background: linear-gradient(135deg, #00c896, #00e5ff);
@@ -617,13 +622,30 @@
       }
       .vb-subtitle {
         color: #ffffffbf;
-        opacity: 0;
         max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
+        margin: 0 auto;
         font-size: clamp(0.95rem, 1.8vw, 1.15rem);
         line-height: 1.8;
-        animation: 0.7s ease-out 0.3s forwards fadeInUp;
+      }
+      .vb-dots {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 28px;
+      }
+      .vb-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ffffff40;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.3s ease;
+      }
+      .vb-dot.is-active {
+        background: #00c896;
+        transform: scale(1.3);
       }
       @media (max-width: 768px) {
         .video-banner {
@@ -1114,8 +1136,8 @@
             <span class="section-label">Soluciones</span>
             <h2 class="section-title">Nuestro estándar 3SG</h2>
             <p class="section-subtitle">
-              Tecnología autónoma de drones que genera modelos 3D para la
-              inspección integral de buques de carga
+              Tecnología autónoma que genera modelos 3D para la inspección
+              integral de cascos, cubiertas y carga.
             </p>
           </div>
           <div class="services-grid">
@@ -1240,15 +1262,46 @@
         </div>
         <div class="vb-overlay"></div>
         <div class="vb-content">
-          <h2 class="vb-title">
-            Certificación visual de la <span class="vb-accent">cubierta del buque</span>
-            antes y después de la limpieza
-          </h2>
-          <p class="vb-subtitle">
-            Modelado 3D comparativo de alta resolución para verificar la
-            limpieza técnica, detectar óxido superficial y sedimentos
-            remanentes, y acelerar la aprobación en inspecciones navales.
-          </p>
+          <div class="vb-carousel" id="vb-carousel">
+            <div class="vb-slide is-active">
+              <h2 class="vb-title">
+                Inspección avanzada del <span class="vb-accent">casco y estructura</span>
+              </h2>
+              <p class="vb-subtitle">
+                Diagnóstico automatizado de fatiga estructural, niveles de
+                corrosión y deformaciones mediante gemelos digitales. Sustituye
+                las inspecciones manuales en dique seco por capturas
+                fotogramétricas de precisión milimétrica.
+              </p>
+            </div>
+            <div class="vb-slide">
+              <h2 class="vb-title">
+                Auditoría digital de <span class="vb-accent">carga y contenedores</span>
+              </h2>
+              <p class="vb-subtitle">
+                Trazabilidad y análisis tridimensional del estado de la carga
+                pre y post-travesía. Registro digital objetivo e incuestionable
+                para delimitar responsabilidades civiles e industriales antes
+                de la descarga.
+              </p>
+            </div>
+            <div class="vb-slide">
+              <h2 class="vb-title">
+                Certificación visual de la <span class="vb-accent">cubierta del buque</span>
+                antes y después de la limpieza
+              </h2>
+              <p class="vb-subtitle">
+                Modelado 3D comparativo de alta resolución para verificar la
+                limpieza técnica, detectar óxido superficial y sedimentos
+                remanentes, y acelerar la aprobación en inspecciones navales.
+              </p>
+            </div>
+          </div>
+          <div class="vb-dots" id="vb-dots">
+            <button class="vb-dot is-active" aria-label="Solución 1"></button>
+            <button class="vb-dot" aria-label="Solución 2"></button>
+            <button class="vb-dot" aria-label="Solución 3"></button>
+          </div>
         </div>
       </section>
 
@@ -1492,6 +1545,33 @@
           .getElementById("navbar")
           .classList.toggle("scrolled", window.scrollY > 50);
       });
+
+      // Video banner carousel — auto-rotate every 5s
+      (function () {
+        const carousel = document.getElementById("vb-carousel");
+        const dotsRow = document.getElementById("vb-dots");
+        if (!carousel || !dotsRow) return;
+        const slides = carousel.querySelectorAll(".vb-slide");
+        const dots = dotsRow.querySelectorAll(".vb-dot");
+        if (slides.length === 0) return;
+
+        let index = 0;
+        let timer;
+
+        function show(i) {
+          index = (i + slides.length) % slides.length;
+          slides.forEach((s, j) => s.classList.toggle("is-active", j === index));
+          dots.forEach((d, j) => d.classList.toggle("is-active", j === index));
+        }
+        function scheduleNext() {
+          clearTimeout(timer);
+          timer = setTimeout(() => { show(index + 1); scheduleNext(); }, 5000);
+        }
+        dots.forEach((dot, i) => {
+          dot.addEventListener("click", () => { show(i); scheduleNext(); });
+        });
+        scheduleNext();
+      })();
 
       // Services dropdown — toggle all cards together
       function toggleServices() {
