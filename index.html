@@ -782,6 +782,17 @@
         max-width: 820px;
         margin: 0 auto;
       }
+      .nosotros-media {
+        max-width: 1100px;
+        margin: 0 auto 48px;
+      }
+      .nosotros-media img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+      }
       .nosotros-lead {
         color: var(--text-dark);
         font-size: clamp(1.1rem, 1.8vw, 1.35rem);
@@ -794,6 +805,31 @@
         font-size: 1rem;
         line-height: 1.8;
         margin-bottom: 18px;
+      }
+      .nosotros-pillars {
+        list-style: none;
+        padding: 0;
+        margin: 28px 0 24px;
+        display: grid;
+        gap: 18px;
+      }
+      .nosotros-pillars li {
+        color: var(--text-muted);
+        font-size: 1rem;
+        line-height: 1.7;
+        padding-left: 18px;
+        border-left: 3px solid var(--accent);
+      }
+      .nosotros-pillars strong {
+        color: var(--text-dark);
+        font-weight: 700;
+      }
+      .nosotros-cta {
+        color: var(--text-dark);
+        font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+        font-weight: 600;
+        margin-top: 28px;
+        text-align: center;
       }
       .gemelo-digital {
         background: var(--bg-dark);
@@ -1552,28 +1588,46 @@
           <div class="section-header">
             <span class="section-label">Nosotros</span>
             <h2 class="section-title">
-              IA aplicada al <span class="hero-accent">sector marítimo</span>
+              No somos un algoritmo. Somos tu <span class="hero-accent">aliado en el muelle</span>
             </h2>
           </div>
+          <figure class="nosotros-media">
+            <img src="./nosotros.png" alt="Equipo de InPort en el muelle" loading="lazy" />
+          </figure>
           <div class="nosotros-body">
             <p class="nosotros-lead">
-              Somos una empresa innovadora de inteligencia artificial que
-              aplica algoritmos de visión por computador de última generación
-              para crear nuevas soluciones en el sector marítimo y naval.
+              Huimos del lenguaje corporativo vacío.
             </p>
             <p class="nosotros-text">
-              Combinamos drones autónomos, fotogrametría de precisión y
-              modelos 3D generativos para transformar procesos que durante
-              décadas han dependido del criterio humano. Nuestra tecnología
-              3SG genera gemelos digitales objetivos, repetibles y auditables
-              de cascos, cubiertas y carga — convirtiendo cada inspección
-              en un activo digital del que tomar decisiones.
+              Sabemos que estás harto de presentaciones PowerPoint, de recién
+              llegados que prometen soluciones milagro y de softwares que luego
+              nadie va a usar. Nosotros también lo estábamos.
             </p>
             <p class="nosotros-text">
-              Trabajamos junto a navieras, operadores portuarios y aseguradoras
-              para reducir tiempos de inactividad, delimitar responsabilidades
-              y elevar el estándar técnico de la inspección naval.
+              Por eso dejamos de seguir la corriente y creamos InPort.
             </p>
+            <p class="nosotros-text">
+              Somos un equipo de técnicos y apasionados del mar que pasamos
+              más tiempo optimizando líneas de código y entendiendo cómo se
+              repara un casco que asistiendo a eventos corporativos.
+            </p>
+            <ul class="nosotros-pillars">
+              <li>
+                <strong>Sin humo:</strong> si nuestra tecnología no te ahorra
+                miles de euros en desviaciones o días de trabajo en el dique
+                seco, te lo diremos con total honestidad.
+              </li>
+              <li>
+                <strong>Hablamos tu idioma:</strong> aprendemos con cada
+                cliente, a pie de barco, en el terreno real.
+              </li>
+              <li>
+                <strong>Nos quedamos contigo:</strong> cuando implantamos
+                nuestra herramienta, no te dejamos solo con una clave de
+                acceso. Nos quedamos en el muelle contigo.
+              </li>
+            </ul>
+            <p class="nosotros-cta">¿Hablamos de persona a persona?</p>
           </div>
         </div>
       </section>
