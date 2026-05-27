@@ -790,8 +790,18 @@
         width: 100%;
         height: auto;
         display: block;
-        border-radius: 16px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+        -webkit-mask-image: radial-gradient(
+          ellipse at center,
+          #000 45%,
+          rgba(0, 0, 0, 0.6) 70%,
+          transparent 95%
+        );
+        mask-image: radial-gradient(
+          ellipse at center,
+          #000 45%,
+          rgba(0, 0, 0, 0.6) 70%,
+          transparent 95%
+        );
       }
       .nosotros-lead {
         color: var(--text-dark);
